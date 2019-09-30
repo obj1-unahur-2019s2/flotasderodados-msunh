@@ -1,0 +1,47 @@
+import rodados.*
+
+test "test simple de la traffic" {
+traffic.colocarMotor(motorPulenta)
+traffic.colocarInterior(interiorComodo)
+assert.equals(5,traffic.capacidad())
+assert.equals(130,traffic.velocidadMaxima())
+assert.equals(5500,traffic.peso())
+}
+
+test " dependencia, esta bien equipada"{
+	var corsa1 = new Corsa()
+	var renault1 = new Renault(tieneTanqueAdicional=true)
+	
+	traffic.colocarMotor(motorPulenta)
+	traffic.colocarInterior(interiorComodo)
+	
+	var dependencia1 = new Dependencia()
+	
+	dependencia1.agregarAFlota(corsa1)
+	dependencia1.agregarAFlota(renault1)
+	dependencia1.agregarAFlota(traffic)
+	assert.that(dependencia1.estaBienEquipada())
+  	//dependencia1.quitarDeFlota(traffic)
+    //assert.notThat(dependencia1.estaBienEquipada())
+	
+	traffic.colocarMotor(motorBataton)
+	assert.notThat(dependencia1.estaBienEquipada())
+	
+}
+
+test "peso total de flota "{
+	var corsa1 = new Corsa()
+	var renault1 = new Renault(tieneTanqueAdicional=true)
+	
+	traffic.colocarMotor(motorPulenta)
+	traffic.colocarInterior(interiorComodo)
+	
+	var dependencia1 = new Dependencia()
+	
+	dependencia1.agregarAFlota(corsa1)
+	dependencia1.agregarAFlota(renault1)
+	dependencia1.agregarAFlota(traffic)
+	
+	assert.equals(8150, dependencia1.pesoTotalFlota())
+
+}

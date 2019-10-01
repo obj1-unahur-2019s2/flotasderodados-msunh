@@ -81,16 +81,20 @@ object azul{}
 object blanco{}
 object rojo{}
 object beige{}
+object verde{}
+object negro{}
 
 
 class AutoEspecial{
 	var property peso = 0
 	var property velocidadMaxima = 0
 	var property color 
+	var property capacidad = 0
 	
 	method peso(cuanto) { peso = cuanto}
 	method velocidadMaxima(cuanto) {velocidadMaxima = cuanto }
 	method color(cual) { color = cual}
+	method capacidad(cuanto) { capacidad = cuanto}
 			
 }
 

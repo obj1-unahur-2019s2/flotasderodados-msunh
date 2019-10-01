@@ -1,5 +1,6 @@
 import rodados.*
 import dependencia.*
+import pedidos.*
 
 test "test simple de la traffic" {
 traffic.colocarMotor(motorPulenta)
@@ -48,35 +49,213 @@ test "peso total de flota "{
 }
 
 
-//capacidad en color
 
-//>>> var corsa1 = new Corsa()
-//	var renault1 = new Renault(tieneTanqueAdicional=true)
-//	
-//	traffic.colocarMotor(motorPulenta)
-//	traffic.colocarInterior(interiorComodo)
-//	
-//	var dependencia1 = new Dependencia()
-//	
-//	dependencia1.agregarAFlota(corsa1)
-//	dependencia1.agregarAFlota(renault1)
-//	dependencia1.agregarAFlota(traffic)
-//>>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> corsa1.color(azul)
-//>>> renault1.color(azul)
-//wollok.lang.MessageNotUnderstoodException: un/a  Renault[tieneTanqueAdicional=true] no entiende el mensaje color(param1). Pero existen otros métodos con diferente cantidad de argumentos: color() 
-//>>> renault
-//ERROR: No se puede resolver la referencia Referenciable 'renault'. (línea: 4)
-//>>> renault1
-//un/a  Renault[tieneTanqueAdicional=true]
-//>>> renault1.color()
-//azul[]
-//>>> traffic.color()
-//blanco[]
-//>>> dependencia1.capacidadTotalEnColor(azul)
-//7
-//>>> renault1.quitarTanque()
-//>>> dependencia1.capacidadTotalEnColor(azul)
-//8
-//>>> dependencia1.capacidadTotalEnColor(blanco)
-//5
-//>>> 
+ test "capacidad en color.."{
+var corsa1 = new Corsa()
+var renault1 = new Renault(tieneTanqueAdicional=true)
+	
+traffic.colocarMotor(motorPulenta)
+traffic.colocarInterior(interiorComodo)
+	
+var dependencia1 = new Dependencia()
+	
+dependencia1.agregarAFlota(corsa1)
+dependencia1.agregarAFlota(renault1)
+dependencia1.agregarAFlota(traffic)
+corsa1.color(azul)
+assert.equals(7,dependencia1.capacidadTotalEnColor(azul))
+
+renault1.quitarTanque()
+assert.equals(8,dependencia1.capacidadTotalEnColor(azul))
+
+assert.equals(5,dependencia1.capacidadTotalEnColor(blanco))
+
+ 
+}
+
+test " color más rapido"{
+
+var corsa1 = new Corsa()
+var renault1 = new Renault(tieneTanqueAdicional=true)
+traffic.colocarMotor(motorPulenta)
+traffic.colocarInterior(interiorComodo)
+	
+var dependencia1 = new Dependencia()
+dependencia1.agregarAFlota(corsa1)
+dependencia1.agregarAFlota(renault1)
+dependencia1.agregarAFlota(traffic)
+corsa1.color(rojo)
+assert.equals(rojo, dependencia1.colorDelRodadoMasRapido())
+}
+
+//capacidad faltante // falta implementar correctamente el test
+
+test "capacidad faltante.."{
+var corsa1 = new Corsa()
+var renault1 = new Renault(tieneTanqueAdicional=true)
+	
+traffic.colocarMotor(motorPulenta)
+traffic.colocarInterior(interiorComodo)
+	
+var dependencia1 = new Dependencia()
+	
+dependencia1.agregarAFlota(corsa1)
+dependencia1.agregarAFlota(renault1)
+dependencia1.agregarAFlota(traffic)
+dependencia1.empleados(20)
+assert.equals(8, dependencia1.capacidadFaltante())
+}
+
+test "es grande"{
+
+	var corsa1 = new Corsa()
+	var renault1 = new Renault(tieneTanqueAdicional=true)
+	
+	traffic.colocarMotor(motorPulenta)
+	traffic.colocarInterior(interiorComodo)
+	
+	var dependencia1 = new Dependencia()
+	
+	dependencia1.agregarAFlota(corsa1)
+	dependencia1.agregarAFlota(renault1)
+	dependencia1.agregarAFlota(traffic)
+	var corsa2 = new Corsa()
+	var renault2 = new Renault()
+	dependencia1.agregarAFlota(corsa2)
+	dependencia1.agregarAFlota(renault2)
+	assert.notThat(dependencia1.esGrande())
+
+	dependencia1.empleados(40)
+	assert.that(dependencia1.esGrande())
+
+	dependencia1.empleados(39)
+    assert.notThat(dependencia1.esGrande())
+
+	dependencia1.empleados(40)
+	dependencia1.quitarDeFlota(renault2)
+	assert.notThat(dependencia1.esGrande())
+
+}
+
+
+
+test " dos dependencias"{
+	
+var deportes = new Dependencia(empleados=45)
+var cultura = new Dependencia(empleados=31) 
+
+var cachito = new Corsa(color=rojo)
+var corsaAzul = new Corsa(color=azul )
+var corsaVerde = new Corsa(color=verde )
+var kwid1 = new Renault(tieneTanqueAdicional=true)
+var autoEspecial1 = new AutoEspecial(capacidad=5, velocidadMaxima=160, peso=1200, color=beige)
+
+deportes.agregarAFlota(cachito)
+deportes.agregarAFlota(corsaAzul)
+deportes.agregarAFlota(corsaVerde)	
+deportes.agregarAFlota(kwid1)
+deportes.agregarAFlota(autoEspecial1)
+
+var kwid2 = new Renault(tieneTanqueAdicional=true)	
+var kwid3 = new Renault(tieneTanqueAdicional=true)
+var kwid4 = new Renault(tieneTanqueAdicional=false)
+
+traffic.colocarInterior(interiorPopular)
+traffic.colocarMotor(motorBataton)	
+
+cultura.agregarAFlota(cachito)
+cultura.agregarAFlota(kwid2)
+cultura.agregarAFlota(kwid3)
+cultura.agregarAFlota(kwid4)
+cultura.agregarAFlota(traffic)
+
+assert.equals(6450, deportes.pesoTotalFlota())
+assert.equals(10700, cultura.pesoTotalFlota())
+
+assert.that(deportes.estaBienEquipada())
+assert.notThat(cultura.estaBienEquipada())
+
+assert.equals(7, deportes.capacidadTotalEnColor(azul))
+assert.equals(10,cultura.capacidadTotalEnColor(azul)) 
+
+assert.equals(beige, deportes.colorDelRodadoMasRapido())
+assert.equals(rojo, cultura.colorDelRodadoMasRapido())
+
+assert.that(deportes.esGrande())
+assert.notThat(cultura.esGrande())
+
+assert.equals(25, deportes.capacidadFaltante())
+assert.equals(5, cultura.capacidadFaltante())
+	
+}
+
+
+//test etapa 2 - cachito satisface y no satisface pedido
+test " etapa 2 - satisface Pedido o no?"{
+var pedido1 = new Pedido()
+var cachito = new Corsa()
+
+cachito.color(rojo)
+pedido1.coloresIncompatibles(azul)
+pedido1.coloresIncompatibles(negro)
+pedido1.distancia(960)
+pedido1.tiempoMaximo(8)
+pedido1.cantidadDePasajeros(4)
+
+assert.equals(120,pedido1.velocidadRequerida())
+assert.that(pedido1.satisfacePedido(cachito))
+
+pedido1.coloresIncompatibles(rojo)
+assert.notThat(pedido1.satisfacePedido(cachito))
+	
+pedido1.cantidadDePasajeros(6)
+assert.notThat(pedido1.satisfacePedido(cachito))
+
+pedido1.tiempoMaximo(6)
+assert.notThat(pedido1.satisfacePedido(cachito))
+
+}
+
+//etapa 3 registros de pedidos de la dependencia
+
+test "registro de pedidos de la dependencia - total de pasajeros" {
+
+var pedido1 = new Pedido()
+var cachito = new Corsa()
+
+cachito.color(rojo)
+pedido1.coloresIncompatibles(azul)
+pedido1.coloresIncompatibles(negro)
+pedido1.distancia(960)
+pedido1.tiempoMaximo(8)
+pedido1.cantidadDePasajeros(4)
+var pedido2 = new Pedido()
+pedido2.cantidadDePasajeros(2)
+var dependencia1 = new Dependencia()
+dependencia1.agregarPedido(pedido1)
+dependencia1.agregarPedido(pedido2)
+assert.equals(6, dependencia1.totalDePasajerosEnPedidos())
+
+}
+
+
+//falta implementar el test
+//var pedido1 = new Pedido()
+//var cachito = new Corsa()
+//
+//cachito.color(rojo)
+//pedido1.coloresIncompatibles(azul)
+//pedido1.coloresIncompatibles(negro)
+//pedido1.distancia(960)
+//pedido1.tiempoMaximo(8)
+//pedido1.cantidadDePasajeros(4)
+//var pedido2 = new Pedido()
+//pedido2.cantidadDePasajeros(2)
+//var dependencia1 = new Dependencia()
+//dependencia1.agregarPedido(pedido1)
+//dependencia1.agregarPedido(pedido2)
+//pedido2.coloresIncompatibles(azul)
+//pedido2.coloresIncompatibles(rojo)
+
+
+

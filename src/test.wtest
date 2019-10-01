@@ -1,4 +1,5 @@
 import rodados.*
+import dependencia.*
 
 test "test simple de la traffic" {
 traffic.colocarMotor(motorPulenta)
@@ -45,3 +46,37 @@ test "peso total de flota "{
 	assert.equals(8150, dependencia1.pesoTotalFlota())
 
 }
+
+
+//capacidad en color
+
+//>>> var corsa1 = new Corsa()
+//	var renault1 = new Renault(tieneTanqueAdicional=true)
+//	
+//	traffic.colocarMotor(motorPulenta)
+//	traffic.colocarInterior(interiorComodo)
+//	
+//	var dependencia1 = new Dependencia()
+//	
+//	dependencia1.agregarAFlota(corsa1)
+//	dependencia1.agregarAFlota(renault1)
+//	dependencia1.agregarAFlota(traffic)
+//>>> >>> >>> >>> >>> >>> >>> >>> >>> >>> >>> corsa1.color(azul)
+//>>> renault1.color(azul)
+//wollok.lang.MessageNotUnderstoodException: un/a  Renault[tieneTanqueAdicional=true] no entiende el mensaje color(param1). Pero existen otros métodos con diferente cantidad de argumentos: color() 
+//>>> renault
+//ERROR: No se puede resolver la referencia Referenciable 'renault'. (línea: 4)
+//>>> renault1
+//un/a  Renault[tieneTanqueAdicional=true]
+//>>> renault1.color()
+//azul[]
+//>>> traffic.color()
+//blanco[]
+//>>> dependencia1.capacidadTotalEnColor(azul)
+//7
+//>>> renault1.quitarTanque()
+//>>> dependencia1.capacidadTotalEnColor(azul)
+//8
+//>>> dependencia1.capacidadTotalEnColor(blanco)
+//5
+//>>> 
